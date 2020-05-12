@@ -1,7 +1,8 @@
 import React from 'react';
+import './public-repositories.styles.scss';
 
 const PublicRepositories = ({ user, repo }) => (
-  <div className='col'>
+  <div className='public-repositories'>
     <h2>Public repositories from user {user}</h2>
 
     {repo.map((repository) => (

@@ -1,6 +1,7 @@
 import React from 'react';
+import './get-user-info.styles.scss';
 
-const GetUserInfo = ({ ...props }) => (
+const GetUserInfo = ({ onClick, ...props }) => (
   <div className='user-info'>
     <div className='avatar'>
       <img src={props.avatar_url} alt=''></img>
@@ -13,6 +14,7 @@ const GetUserInfo = ({ ...props }) => (
         {props.blog}
       </a>
     </div>
+    <button onClick={onClick}>Show user repositories</button>
   </div>
 );
 

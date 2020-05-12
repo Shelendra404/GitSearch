@@ -4,10 +4,6 @@ import PublicRepositories from './components/public-repositories/public-reposito
 import GetUserInfo from './components/get-user-info/get-user-info.component';
 import './App.css';
 
-/* TO-DO:
-- learn to page responses when more than x repos
-*/
-
 class App extends React.Component {
   constructor() {
     super();
@@ -60,16 +56,13 @@ class App extends React.Component {
 
   getExistingUserInfo(props) {
     return (
-      <div>
-        <GetUserInfo
-          avatar_url={props.avatar_url}
-          login={props.login}
-          name={props.name}
-          public_repos={props.public_repos}
-          blog={props.blog}></GetUserInfo>
-
-        <button onClick={() => this.showUserRepos()}>Get repos</button>
-      </div>
+      <GetUserInfo
+        avatar_url={props.avatar_url}
+        login={props.login}
+        name={props.name}
+        public_repos={props.public_repos}
+        blog={props.blog}
+        onClick={() => this.showUserRepos()}></GetUserInfo>
     );
   }
 
@@ -91,13 +84,12 @@ class App extends React.Component {
           onChange={(e) => this.handleChangeEvent(e.target.value)}
         />
 
-        <div>
+        <div className='results'>
           {this.state.userdata.id
             ? this.getExistingUserInfo(this.state.userdata)
             : this.state.userdata.message}
+          {repos}
         </div>
-
-        <div>{repos}</div>
       </div>
     );
   }
