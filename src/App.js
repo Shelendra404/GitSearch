@@ -28,7 +28,7 @@ class App extends React.Component {
         const apiUser = process.env.REACT_APP_USER;
         const apiKey = process.env.REACT_APP_TOKEN;
 
-        const usersResponse = await fetch(
+        const users = await fetch(
           `https://api.github.com/users/${this.state.username}`,
           {
             headers: new Headers({
@@ -36,12 +36,17 @@ class App extends React.Component {
             }),
           }
         );
-        const responseUser = await usersResponse.json();
+        const userData = await users.json();
+        this.setState({ userdata: userData });
+        const userRepos = await fetch(userData.repos_url, {
+          headers: new Headers({
+            Authorization: 'Basic ' + btoa(`${apiUser}:${apiKey}`),
+          }),
+        });
+        const repoData = await userRepos.json();
 
-        this.setState({ userdata: responseUser });
-        const userRepo = await fetch(responseUser.repos_url);
-        const responseRepos = await userRepo.json();
-        this.setState({ repos: responseRepos });
+        this.setState({ repos: repoData });
+        //getUserCommits();
       } catch (err) {
         console.log('Something went wrong: ' + err);
       }
