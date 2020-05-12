@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 
 /* TO-DO:
-- learn to send headers so possible to send api key for authed queries
 - learn to page responses when more than x repos
 - make more architectured app (not all in one page!!!)
 */
@@ -27,15 +26,6 @@ class App extends React.Component {
     event.preventDefault();
 
     const getUserRepos = async () => {
-      // fetch('URL_GOES_HERE', {
-      //   method: 'post',
-      //   headers: new Headers({
-      //     'Authorization': 'Basic '+btoa('username:password'),
-      //     'Content-Type': 'application/x-www-form-urlencoded'
-      //   }),
-      //   body: 'A=1&B=2'
-      // });
-
       try {
         const apiUser = process.env.REACT_APP_USER;
         const apiKey = process.env.REACT_APP_TOKEN;
@@ -48,12 +38,12 @@ class App extends React.Component {
             }),
           }
         );
-        const response = await usersResponse.json();
+        const responseUser = await usersResponse.json();
 
-        this.setState({ userdata: response });
-        const userRepo = await fetch(response.repos_url);
-        const response2 = await userRepo.json();
-        this.setState({ repos: response2 });
+        this.setState({ userdata: responseUser });
+        const userRepo = await fetch(responseUser.repos_url);
+        const responseRepos = await userRepo.json();
+        this.setState({ repos: responseRepos });
       } catch (err) {
         console.log('Something went wrong: ' + err);
       }
