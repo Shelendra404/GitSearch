@@ -27,9 +27,26 @@ class App extends React.Component {
     event.preventDefault();
 
     const getUserRepos = async () => {
+      // fetch('URL_GOES_HERE', {
+      //   method: 'post',
+      //   headers: new Headers({
+      //     'Authorization': 'Basic '+btoa('username:password'),
+      //     'Content-Type': 'application/x-www-form-urlencoded'
+      //   }),
+      //   body: 'A=1&B=2'
+      // });
+
       try {
+        const apiUser = process.env.REACT_APP_USER;
+        const apiKey = process.env.REACT_APP_TOKEN;
+
         const usersResponse = await fetch(
-          `https://api.github.com/users/${this.state.username}`
+          `https://api.github.com/users/${this.state.username}`,
+          {
+            headers: new Headers({
+              Authorization: 'Basic ' + btoa(`${apiUser}:${apiKey}`),
+            }),
+          }
         );
         const response = await usersResponse.json();
 
