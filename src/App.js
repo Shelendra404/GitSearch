@@ -1,9 +1,11 @@
 import React from 'react';
+import UserSearch from './components/user-search/user-search.component';
+import PublicRepositories from './components/public-repositories/public-repositories.component';
+import GetUserInfo from './components/get-user-info/get-user-info.component';
 import './App.css';
 
 /* TO-DO:
 - learn to page responses when more than x repos
-- make more architectured app (not all in one page!!!)
 */
 
 class App extends React.Component {
@@ -58,21 +60,15 @@ class App extends React.Component {
 
   getExistingUserInfo(props) {
     return (
-      <div className='user-info'>
-        <div className='avatar'>
-          <img src={props.avatar_url} alt=''></img>
-        </div>
-        <div className='login-name'>{props.login}</div>
-        <div className='user-name'>{props.name}</div>
-        <div className='public-repos'>Public repos: {props.public_repos}</div>
-        <div className='blog'>
-          <a href={props.blog} target='_blank' rel='noopener noreferrer'>
-            {props.blog}
-          </a>
-        </div>
-        <div>
-          <button onClick={() => this.showUserRepos()}>Get repos</button>
-        </div>
+      <div>
+        <GetUserInfo
+          avatar_url={props.avatar_url}
+          login={props.login}
+          name={props.name}
+          public_repos={props.public_repos}
+          blog={props.blog}></GetUserInfo>
+
+        <button onClick={() => this.showUserRepos()}>Get repos</button>
       </div>
     );
   }
@@ -82,29 +78,25 @@ class App extends React.Component {
 
     if (this.state.showRepos) {
       repos = (
-        <div className='col'>
-          <h2>Public repositories from user {this.state.username}</h2>
-          {this.state.repos.map((repo) => (
-            <div key={repo.id}>{repo.name}</div>
-          ))}
-        </div>
+        <PublicRepositories
+          user={this.state.username}
+          repo={this.state.repos}></PublicRepositories>
       );
     }
 
     return (
       <div className='App'>
-        <form onSubmit={(event) => this.getUserData(event)}>
-          <input
-            type='text'
-            placeholder='Search for a GitHub user'
-            onChange={(e) => this.handleChangeEvent(e.target.value)}></input>
-          <input type='submit' value='Search'></input>
-        </form>
+        <UserSearch
+          onSubmit={(event) => this.getUserData(event)}
+          onChange={(e) => this.handleChangeEvent(e.target.value)}
+        />
+
         <div>
           {this.state.userdata.id
             ? this.getExistingUserInfo(this.state.userdata)
             : this.state.userdata.message}
         </div>
+
         <div>{repos}</div>
       </div>
     );
