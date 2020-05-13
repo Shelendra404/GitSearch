@@ -8,3 +8,7 @@
   flex-basis: 0;
   margin: auto;
 }
+
+.commit-avatar {
+  width: 25px;
+}

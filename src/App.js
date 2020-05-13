@@ -13,11 +13,22 @@ class App extends React.Component {
       userdata: [],
       repos: [],
       showRepos: false,
+      commits: [],
+      commitUsername: '',
+      commitUserAvatar: '',
     };
   }
 
   handleChangeEvent(props) {
     this.setState({ username: props });
+  }
+
+  componentDidMount() {
+    if (this.state.commits.length === 0) {
+      console.log('null');
+    } else console.log('not null');
+
+    console.log(this.state.commitUserName);
   }
 
   getCredentials(props) {
@@ -87,7 +98,7 @@ class App extends React.Component {
           }
         );
         const commitData = await commits.json();
-        console.log(commitData);
+        this.setState({ commits: commitData });
       } catch (err) {
         console.log('Something went wrong while fetching the commits.');
       }
@@ -114,6 +125,7 @@ class App extends React.Component {
 
   render() {
     let repos = null;
+    let commits = null;
 
     if (this.state.showRepos) {
       repos = (
@@ -141,6 +153,38 @@ class App extends React.Component {
       );
     }
 
+    // {commit.author !== null
+    //   ? commit.author.login
+    //   : commit.commit.author.name}
+
+    if (this.state.commits.length !== 0) {
+      console.log(this.state.commits);
+      commits = (
+        <div>
+          <h2>Commits for this repository:</h2>
+          {this.state.commits.map((commit) => (
+            <div key={commit.sha}>
+              <div>
+                <img
+                  className='commit-avatar'
+                  alt=''
+                  src={
+                    commit.author
+                      ? commit.author.avatar_url
+                      : `https://github.com/identicons/${commit.author}.png`
+                  }></img>
+                {commit.author !== null
+                  ? commit.author.login
+                  : commit.commit.author.name}
+              </div>
+              {commit.commit.author.date}
+              {commit.commit.message}
+            </div>
+          ))}
+        </div>
+      );
+    }
+
     return (
       <div className='App'>
         <UserSearch
@@ -153,6 +197,7 @@ class App extends React.Component {
             ? this.getExistingUserInfo(this.state.userdata)
             : this.state.userdata.message}
           {repos}
+          {commits}
         </div>
       </div>
     );
