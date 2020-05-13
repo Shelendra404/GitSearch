@@ -14,21 +14,11 @@ class App extends React.Component {
       repos: [],
       showRepos: false,
       commits: [],
-      commitUsername: '',
-      commitUserAvatar: '',
     };
   }
 
   handleChangeEvent(props) {
     this.setState({ username: props });
-  }
-
-  componentDidMount() {
-    if (this.state.commits.length === 0) {
-      console.log('null');
-    } else console.log('not null');
-
-    console.log(this.state.commitUserName);
   }
 
   getCredentials(props) {
@@ -45,7 +35,7 @@ class App extends React.Component {
   getUserData(event) {
     event.preventDefault();
 
-    const getUserRepos = async () => {
+    const getUser = async () => {
       try {
         const users = await fetch(
           `https://api.github.com/users/${this.state.username}`,
@@ -61,8 +51,19 @@ class App extends React.Component {
         );
         const userData = await users.json();
         this.setState({ userdata: userData });
-        await console.log(this.state.userdata);
-        const userRepos = await fetch(userData.repos_url, {
+      } catch (err) {
+        console.log('Something went wrong: ' + err);
+      }
+    };
+
+    getUser();
+  }
+
+  getRepos = () => {
+    console.log(this.state.userdata.repos_url);
+    const getRepositories = async () => {
+      try {
+        const userRepos = await fetch(this.state.userdata.repos_url, {
           headers: new Headers({
             Authorization:
               'Basic ' +
@@ -72,15 +73,14 @@ class App extends React.Component {
           }),
         });
         const repoData = await userRepos.json();
-
         this.setState({ repos: repoData });
       } catch (err) {
-        console.log('Something went wrong: ' + err);
+        console.log('oh no');
       }
     };
 
-    getUserRepos();
-  }
+    getRepositories();
+  };
 
   getCommits = (props) => {
     console.log('You clicked on Show Commits from ' + props);
@@ -110,6 +110,7 @@ class App extends React.Component {
 
   showUserRepos = () => {
     this.setState({ showRepos: true });
+    this.getRepos();
   };
 
   getExistingUserInfo(props) {
