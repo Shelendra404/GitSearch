@@ -61,6 +61,7 @@ class App extends React.Component {
         );
         const userData = await users.json();
         this.setState({ userdata: userData });
+        await console.log(this.state.userdata);
         const userRepos = await fetch(userData.repos_url, {
           headers: new Headers({
             Authorization:
@@ -112,6 +113,13 @@ class App extends React.Component {
   };
 
   getExistingUserInfo(props) {
+    let date = new Date(props.created_at);
+    console.log(
+      (date =
+        date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear())
+    );
+    let date2 = date.toString('dddd, MMMM ,yyyy');
+    console.log(date2);
     return (
       <GetUserInfo
         avatar_url={props.avatar_url}
@@ -119,6 +127,7 @@ class App extends React.Component {
         name={props.name}
         public_repos={props.public_repos}
         blog={props.blog}
+        created={date}
         onClick={() => this.showUserRepos()}></GetUserInfo>
     );
   }
@@ -160,7 +169,7 @@ class App extends React.Component {
     if (this.state.commits.length !== 0) {
       console.log(this.state.commits);
       commits = (
-        <div>
+        <div className='commits'>
           <h2>Commits for this repository:</h2>
           {this.state.commits.map((commit) => (
             <div key={commit.sha}>

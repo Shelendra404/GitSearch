@@ -1,4 +1,27 @@
 .user-info {
-  max-width: 50vw;
+  max-width: 20vw;
   flex-grow: 1;
+}
+
+.avatar img {
+  width: 200px;
+  border: 1px solid #e1e4e8;
+  border-bottom: 0;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.login-name {
+  font-size: 26px;
+  line-height: 30px;
+}
+
+.user-name {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 24px;
+  color: #666;
 }

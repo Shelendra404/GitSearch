@@ -8,12 +8,17 @@ const GetUserInfo = ({ onClick, ...props }) => (
     </div>
     <div className='login-name'>{props.login}</div>
     <div className='user-name'>{props.name}</div>
-    <div className='public-repos'>Public repos: {props.public_repos}</div>
+    <hr />
+    <div className='public-repos'>
+      Public repositories: {props.public_repos}
+    </div>
     <div className='blog'>
       <a href={props.blog} target='_blank' rel='noopener noreferrer'>
         {props.blog}
       </a>
     </div>
+
+    <div className='created_at'>Member since: {props.created}</div>
     <button onClick={onClick}>Show user repositories</button>
   </div>
 );

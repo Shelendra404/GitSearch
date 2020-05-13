@@ -12,3 +12,8 @@
 .commit-avatar {
   width: 25px;
 }
+
+.commits {
+  max-width: 50vw;
+  flex-grow: 1;
+}
