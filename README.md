@@ -26,3 +26,4 @@ There is currently no implementation of this code for testing purposes. I might 
 - Headers not being sent with second fetch, resulting in errors
 - Add functionality: show last commits with name, avatar, date and message of commit
 - Find a way to map through all commits within each repo
+- Succesfully moved public repositories into its own component. Hurray!

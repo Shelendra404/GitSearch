@@ -1,7 +1,8 @@
 import React from 'react';
 import UserSearch from './components/user-search/user-search.component';
-//import PublicRepositories from './components/public-repositories/public-repositories.component';
+import PublicRepositories from './components/public-repositories/public-repositories.component';
 import GetUserInfo from './components/get-user-info/get-user-info.component';
+import RepositoryCommits from './components/repository-commits/repository-commits.components';
 import './App.css';
 
 class App extends React.Component {
@@ -52,7 +53,7 @@ class App extends React.Component {
         const userData = await users.json();
         this.setState({ userdata: userData });
       } catch (err) {
-        console.log('Something went wrong: ' + err);
+        console.log('Something went wrong while searching for the user.');
       }
     };
 
@@ -75,7 +76,7 @@ class App extends React.Component {
         const repoData = await userRepos.json();
         this.setState({ repos: repoData });
       } catch (err) {
-        console.log('oh no');
+        console.log('Something went wrong while fetching the repositories.');
       }
     };
 
@@ -139,27 +140,10 @@ class App extends React.Component {
 
     if (this.state.showRepos) {
       repos = (
-        <div className='public-repositories'>
-          <h2>Public repositories from user {this.state.username}</h2>
-
-          {this.state.repos.map((repository) => (
-            <div key={repository.id}>
-              <a
-                href={repository.html_url}
-                target='_blank'
-                rel='noreferrer noopener'>
-                {repository.name}
-              </a>
-              <button onClick={() => this.getCommits(repository.name)}>
-                Get Commits
-              </button>
-              <br />
-            </div>
-          ))}
-        </div>
-        //   <PublicRepositories
-        //     user={this.state.username}
-        //     repo={this.state.repos}></PublicRepositories>
+        <PublicRepositories
+          user={this.state.username}
+          repo={this.state.repos}
+          onClick={(props) => this.getCommits(props)}></PublicRepositories>
       );
     }
 
@@ -170,28 +154,29 @@ class App extends React.Component {
     if (this.state.commits.length !== 0) {
       console.log(this.state.commits);
       commits = (
-        <div className='commits'>
-          <h2>Commits for this repository:</h2>
-          {this.state.commits.map((commit) => (
-            <div key={commit.sha}>
-              <div>
-                <img
-                  className='commit-avatar'
-                  alt=''
-                  src={
-                    commit.author
-                      ? commit.author.avatar_url
-                      : `https://github.com/identicons/${commit.author}.png`
-                  }></img>
-                {commit.author !== null
-                  ? commit.author.login
-                  : commit.commit.author.name}
-              </div>
-              {commit.commit.author.date}
-              {commit.commit.message}
-            </div>
-          ))}
-        </div>
+        <RepositoryCommits data={this.state.commits} />
+        // <div className='commits'>
+        //   <h2>Commits for this repository:</h2>
+        //   {this.state.commits.map((commit) => (
+        //     <div key={commit.sha}>
+        //       <div>
+        //         <img
+        //           className='commit-avatar'
+        //           alt=''
+        //           src={
+        //             commit.author
+        //               ? commit.author.avatar_url
+        //               : `https://github.com/identicons/${commit.author}.png`
+        //           }></img>
+        //         {commit.author !== null
+        //           ? commit.author.login
+        //           : commit.commit.author.name}
+        //       </div>
+        //       {commit.commit.author.date}
+        //       {commit.commit.message}
+        //     </div>
+        //   ))}
+        // </div>
       );
     }
 
