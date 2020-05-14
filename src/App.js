@@ -15,6 +15,7 @@ class App extends React.Component {
       repos: [],
       showRepos: false,
       commits: [],
+      lastRepo: '',
     };
   }
 
@@ -33,21 +34,39 @@ class App extends React.Component {
     }
   }
 
+  getHeaders() {
+    console.log('jee');
+    return new Headers({
+      Authorization:
+        'Basic ' +
+        btoa(`${this.getCredentials('user')}:${this.getCredentials('key')}`),
+    });
+  }
+
+  showUserRepos = () => {
+    this.setState({ showRepos: true });
+    this.getRepos();
+  };
+
+  getDate(date) {
+    let ParsedDate = new Date(date);
+    ParsedDate =
+      ParsedDate.getDate() +
+      '.' +
+      (ParsedDate.getMonth() + 1) +
+      '.' +
+      ParsedDate.getFullYear();
+    return ParsedDate;
+  }
+
   getUserData(event) {
     event.preventDefault();
-
     const getUser = async () => {
       try {
         const users = await fetch(
           `https://api.github.com/users/${this.state.username}`,
           {
-            headers: new Headers({
-              Authorization:
-                'Basic ' +
-                btoa(
-                  `${this.getCredentials('user')}:${this.getCredentials('key')}`
-                ),
-            }),
+            headers: this.getHeaders(),
           }
         );
         const userData = await users.json();
@@ -61,17 +80,11 @@ class App extends React.Component {
   }
 
   getRepos = () => {
-    console.log(this.state.userdata.repos_url);
+    // console.log(this.state.userdata.repos_url);
     const getRepositories = async () => {
       try {
         const userRepos = await fetch(this.state.userdata.repos_url, {
-          headers: new Headers({
-            Authorization:
-              'Basic ' +
-              btoa(
-                `${this.getCredentials('user')}:${this.getCredentials('key')}`
-              ),
-          }),
+          headers: this.getHeaders(),
         });
         const repoData = await userRepos.json();
         this.setState({ repos: repoData });
@@ -84,19 +97,13 @@ class App extends React.Component {
   };
 
   getCommits = (props) => {
-    console.log('You clicked on Show Commits from ' + props);
+    this.setState({ lastRepo: props });
     const getUserCommits = async () => {
       try {
         const commits = await fetch(
           `https://api.github.com/repos/${this.state.userdata.login}/${props}/commits`,
           {
-            headers: new Headers({
-              Authorization:
-                'Basic ' +
-                btoa(
-                  `${this.getCredentials('user')}:${this.getCredentials('key')}`
-                ),
-            }),
+            headers: this.getHeaders(),
           }
         );
         const commitData = await commits.json();
@@ -109,19 +116,9 @@ class App extends React.Component {
     getUserCommits();
   };
 
-  showUserRepos = () => {
-    this.setState({ showRepos: true });
-    this.getRepos();
-  };
-
   getExistingUserInfo(props) {
-    let date = new Date(props.created_at);
-    console.log(
-      (date =
-        date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear())
-    );
-    let date2 = date.toString('dddd, MMMM ,yyyy');
-    console.log(date2);
+    // console.log(props.created_at);
+
     return (
       <GetUserInfo
         avatar_url={props.avatar_url}
@@ -129,7 +126,7 @@ class App extends React.Component {
         name={props.name}
         public_repos={props.public_repos}
         blog={props.blog}
-        created={date}
+        created={this.getDate(props.created_at)}
         onClick={() => this.showUserRepos()}></GetUserInfo>
     );
   }
@@ -147,36 +144,14 @@ class App extends React.Component {
       );
     }
 
-    // {commit.author !== null
-    //   ? commit.author.login
-    //   : commit.commit.author.name}
-
     if (this.state.commits.length !== 0) {
-      console.log(this.state.commits);
+      //console.log(this.state.repos);
       commits = (
-        <RepositoryCommits data={this.state.commits} />
-        // <div className='commits'>
-        //   <h2>Commits for this repository:</h2>
-        //   {this.state.commits.map((commit) => (
-        //     <div key={commit.sha}>
-        //       <div>
-        //         <img
-        //           className='commit-avatar'
-        //           alt=''
-        //           src={
-        //             commit.author
-        //               ? commit.author.avatar_url
-        //               : `https://github.com/identicons/${commit.author}.png`
-        //           }></img>
-        //         {commit.author !== null
-        //           ? commit.author.login
-        //           : commit.commit.author.name}
-        //       </div>
-        //       {commit.commit.author.date}
-        //       {commit.commit.message}
-        //     </div>
-        //   ))}
-        // </div>
+        <RepositoryCommits
+          data={this.state.commits}
+          getDate={(props) => this.getDate(props)}
+          lastRepo={this.state.lastRepo}
+        />
       );
     }
 

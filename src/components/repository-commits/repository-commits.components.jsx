@@ -1,8 +1,8 @@
 import React from 'react';
 
-const RepositoryCommits = ({ data }) => (
+const RepositoryCommits = ({ data, lastRepo, getDate }) => (
   <div className='commits'>
-    <h2>Commits for this repository:</h2>
+    <h2>Commits for repository [{lastRepo}]</h2>
     {data.map((commit) => (
       <div key={commit.sha}>
         <div>
@@ -18,8 +18,8 @@ const RepositoryCommits = ({ data }) => (
             ? commit.author.login
             : commit.commit.author.name}
         </div>
-        {commit.commit.author.date}
-        {commit.commit.message}
+        <div>{getDate(commit.commit.author.date)}</div>
+        <div>{commit.commit.message}</div>
       </div>
     ))}
   </div>

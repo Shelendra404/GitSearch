@@ -20,6 +20,7 @@ There is currently no implementation of this code for testing purposes. I might 
 
 - When returning to the page, might show username but it won't be on state. Need to wipe this on exit/re-enter
 - Proper handling of errors when user is not found
+- User info gets called too many times. Why?
 
 ### Fixes and done to-do's
 
@@ -27,3 +28,7 @@ There is currently no implementation of this code for testing purposes. I might 
 - Add functionality: show last commits with name, avatar, date and message of commit
 - Find a way to map through all commits within each repo
 - Succesfully moved public repositories into its own component. Hurray!
+- Parse dates properly for joined date and commits.
+
+### Future ideas ###
+- Add "x days ago" to the commits
