@@ -11,10 +11,7 @@ There is currently no implementation of this code for testing purposes. I might 
 - Some blocks of code have already been turned into their own components. Check out if more clean-up can be done
 - Add some proper styling to the components
 - Possibly implement this to my web site for public testing
-- Find a way to set headers only once as a variable
-- Show last 10 commits
-- Possibly show more commits and page through them
-- Show more than X repositories and page through them
+- Further develop the pagination, and possible add it to commits as well
 
 ### Fixes waiting to happen
 
@@ -29,6 +26,9 @@ There is currently no implementation of this code for testing purposes. I might 
 - Find a way to map through all commits within each repo
 - Succesfully moved public repositories into its own component. Hurray!
 - Parse dates properly for joined date and commits.
+- Headers are now brought in as variables.
+- Show last 10 commits
+- Show more than X repositories and page through them
 
 ### Future ideas ###
 - Add "x days ago" to the commits
