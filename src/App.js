@@ -3,6 +3,7 @@ import UserSearch from './components/user-search/user-search.component';
 import PublicRepositories from './components/public-repositories/public-repositories.component';
 import GetUserInfo from './components/get-user-info/get-user-info.component';
 import RepositoryCommits from './components/repository-commits/repository-commits.components';
+import PaginationButtons from './components/pagination-buttons/pagination-buttons.component';
 import './App.css';
 
 class App extends React.Component {
@@ -16,6 +17,12 @@ class App extends React.Component {
       showRepos: false,
       commits: [],
       lastRepo: '',
+      page: '1',
+      headerLink: '',
+      first: '',
+      prev: '',
+      next: '',
+      last: '',
     };
   }
 
@@ -35,7 +42,6 @@ class App extends React.Component {
   }
 
   getHeaders() {
-    console.log('jee');
     return new Headers({
       Authorization:
         'Basic ' +
@@ -61,8 +67,13 @@ class App extends React.Component {
 
   getUserData(event) {
     event.preventDefault();
+    // Set everything back to original state
+
     const getUser = async () => {
       try {
+        await this.setState({ showRepos: false });
+        await this.setState({ repos: [] });
+        await this.setState({ commits: [] });
         const users = await fetch(
           `https://api.github.com/users/${this.state.username}`,
           {
@@ -80,14 +91,19 @@ class App extends React.Component {
   }
 
   getRepos = () => {
-    // console.log(this.state.userdata.repos_url);
     const getRepositories = async () => {
       try {
-        const userRepos = await fetch(this.state.userdata.repos_url, {
-          headers: this.getHeaders(),
-        });
+        const userRepos = await fetch(
+          this.state.userdata.repos_url + '?per_page=2&page=' + this.state.page,
+          {
+            headers: this.getHeaders(),
+          }
+        );
+        await this.setState({ headerLink: userRepos.headers.get('Link') });
+
         const repoData = await userRepos.json();
-        this.setState({ repos: repoData });
+        await this.setState({ repos: repoData });
+        await this.setRepoPageState();
       } catch (err) {
         console.log('Something went wrong while fetching the repositories.');
       }
@@ -101,11 +117,12 @@ class App extends React.Component {
     const getUserCommits = async () => {
       try {
         const commits = await fetch(
-          `https://api.github.com/repos/${this.state.userdata.login}/${props}/commits`,
+          `https://api.github.com/repos/${this.state.userdata.login}/${props}/commits?per_page=10`,
           {
             headers: this.getHeaders(),
           }
         );
+
         const commitData = await commits.json();
         this.setState({ commits: commitData });
       } catch (err) {
@@ -116,9 +133,36 @@ class App extends React.Component {
     getUserCommits();
   };
 
-  getExistingUserInfo(props) {
-    // console.log(props.created_at);
+  setRepoPageState() {
+    this.setState({ first: '', last: '', next: '', prev: '' });
+    let data = this.state.headerLink;
+    let parse = require('parse-link-header');
+    let parsedData = parse(data);
 
+    Object.keys(parsedData).map((key) =>
+      this.setState({ [key]: parsedData[`${key}`]['page'] })
+    );
+  }
+
+  dynamicFetchRepos(props) {
+    let data = this.state.headerLink;
+    let parse = require('parse-link-header');
+    let parsedData = parse(data);
+
+    let page = parsedData[`${props}`]['page'];
+
+    const repoFetch = async () => {
+      try {
+        await this.setState({ page: page });
+        await this.getRepos();
+      } catch (err) {
+        console.log('Something went wrong');
+      }
+    };
+    repoFetch();
+  }
+
+  getExistingUserInfo(props) {
     return (
       <GetUserInfo
         avatar_url={props.avatar_url}
@@ -137,15 +181,26 @@ class App extends React.Component {
 
     if (this.state.showRepos) {
       repos = (
-        <PublicRepositories
-          user={this.state.username}
-          repo={this.state.repos}
-          onClick={(props) => this.getCommits(props)}></PublicRepositories>
+        <div>
+          <PublicRepositories
+            user={this.state.username}
+            repo={this.state.repos}
+            onClick={(props) => this.getCommits(props)}></PublicRepositories>
+          <PaginationButtons
+            onClick={(props) => this.dynamicFetchRepos(props)}
+            values={[
+              [this.state.first ? 'first' : ''],
+              [this.state.prev ? 'prev' : ''],
+              [this.state.next ? 'next' : ''],
+              [this.state.last ? 'last' : ''],
+            ]}>
+            {PaginationButtons.children}
+          </PaginationButtons>
+        </div>
       );
     }
 
     if (this.state.commits.length !== 0) {
-      //console.log(this.state.repos);
       commits = (
         <RepositoryCommits
           data={this.state.commits}
