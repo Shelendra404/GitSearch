@@ -9,15 +9,15 @@ There is currently no implementation of this code for testing purposes. I might 
 ### To-do
 
 - Some blocks of code have already been turned into their own components. Check out if more clean-up can be done
-- Add some proper styling to the components
 - Possibly implement this to my web site for public testing
-- Further develop the pagination, and possible add it to commits as well
+- Additional page styling
 
 ### Fixes waiting to happen
 
-- When returning to the page, might show username but it won't be on state. Need to wipe this on exit/re-enter
 - Proper handling of errors when user is not found
 - User info gets called too many times. Why?
+- Throws an error when trying to access repositories with no commits
+- Button styling
 
 ### Fixes and done to-do's
 
@@ -29,6 +29,9 @@ There is currently no implementation of this code for testing purposes. I might 
 - Headers are now brought in as variables.
 - Show last 10 commits
 - Show more than X repositories and page through them
+- Add some proper styling to the components
+- When returning to the page, might show username but it won't be on state. Need to wipe this on exit/re-enter
 
-### Future ideas ###
+### Future ideas
+
 - Add "x days ago" to the commits
