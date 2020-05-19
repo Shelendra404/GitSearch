@@ -1,0 +1,60 @@
+.commits {
+  flex-grow: 1;
+  display: inline-block;
+}
+
+.commits-list {
+  border-bottom: 2px solid #dadada;
+  background-color: white;
+  margin: 10px auto;
+  padding: 10px;
+  max-width: 600px;
+}
+
+.commit-avatar {
+  width: 25px;
+  margin: 0 5px 0 0;
+}
+
+.info {
+  display: flex;
+  text-align: left;
+}
+
+.message-row {
+  display: flex;
+}
+
+.date {
+  font-weight: 500;
+  display: flex;
+  // margin-right: 20px;
+}
+.message {
+  text-align: left;
+  margin-left: 20px;
+}
+.committer {
+  display: flex;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.title {
+  font-weight: 500;
+  display: flex;
+}
+
+// @media only screen and (min-width: 991px) {
+//   .commits {
+//     // display: flex;
+//     width: 100vw;
+//   }
+// }
+
+// @media only screen and (min-width: 1500px) {
+//   .commits {
+//     // display: flex;
+//     width: 50vw;
+//   }
+// }

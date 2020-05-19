@@ -1,4 +1,42 @@
 .public-repositories {
-  max-width: 50vw;
-  flex-grow: 1;
+  display: inline-block;
+  vertical-align: top;
 }
+
+.commit-button {
+  float: right;
+}
+
+.repository-link {
+  text-align: left;
+  flex-grow: 2;
+  // margin: 0px 50px;
+}
+
+.repositories {
+  display: flex;
+  padding: 2px;
+  margin: 2px;
+  border-bottom: 1px solid lightgray;
+  /* max-width: 80%; */
+  margin: auto;
+}
+
+// @media only screen and (min-width: 991px) {
+//   .public-repositories {
+//     width: 100vw;
+//   }
+// }
+@media only screen and (min-width: 768px) {
+  .public-repositories {
+    display: inline-block;
+    vertical-align: top;
+    width: 35vw;
+    margin: 0 50px;
+  }
+}
+// @media only screen and (min-width: 1500px) {
+//   .public-repositories {
+//     width: 30vw;
+//   }
+// }

@@ -4,16 +4,12 @@
 
 .results {
   width: 90%;
-  display: flex;
+  display: inline-block;
   flex-basis: 0;
   margin: auto;
 }
-
-.commit-avatar {
-  width: 25px;
-}
-
-.commits {
-  max-width: 50vw;
-  flex-grow: 1;
+@media only screen and (min-width: 1200px) {
+  .results {
+    display: flex;
+  }
 }

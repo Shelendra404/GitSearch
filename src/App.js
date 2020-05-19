@@ -94,7 +94,9 @@ class App extends React.Component {
     const getRepositories = async () => {
       try {
         const userRepos = await fetch(
-          this.state.userdata.repos_url + '?per_page=2&page=' + this.state.page,
+          this.state.userdata.repos_url +
+            '?per_page=10&page=' +
+            this.state.page,
           {
             headers: this.getHeaders(),
           }
@@ -181,7 +183,7 @@ class App extends React.Component {
 
     if (this.state.showRepos) {
       repos = (
-        <div>
+        <div className='public-repositories'>
           <PublicRepositories
             user={this.state.username}
             repo={this.state.repos}
