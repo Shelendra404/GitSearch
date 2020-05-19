@@ -203,13 +203,17 @@ class App extends React.Component {
     }
 
     if (this.state.commits.length !== 0) {
-      commits = (
-        <RepositoryCommits
-          data={this.state.commits}
-          getDate={(props) => this.getDate(props)}
-          lastRepo={this.state.lastRepo}
-        />
-      );
+      if (this.state.commits.message) {
+        commits = <div>This repository is empty.</div>;
+      } else {
+        commits = (
+          <RepositoryCommits
+            data={this.state.commits}
+            getDate={(props) => this.getDate(props)}
+            lastRepo={this.state.lastRepo}
+          />
+        );
+      }
     }
 
     return (

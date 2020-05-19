@@ -16,7 +16,6 @@ There is currently no implementation of this code for testing purposes. I might 
 
 - Proper handling of errors when user is not found
 - User info gets called too many times. Why?
-- Throws an error when trying to access repositories with no commits
 - Button styling
 
 ### Fixes and done to-do's
@@ -31,6 +30,7 @@ There is currently no implementation of this code for testing purposes. I might 
 - Show more than X repositories and page through them
 - Add some proper styling to the components
 - When returning to the page, might show username but it won't be on state. Need to wipe this on exit/re-enter
+- Throws an error when trying to access repositories with no commits
 
 ### Future ideas
 
